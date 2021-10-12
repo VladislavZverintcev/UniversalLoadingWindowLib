@@ -1,0 +1,60 @@
+﻿<Window x:Class="UniversalLoadingWindowLib.WindowLoading"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UniversalLoadingWindowLib"
+        mc:Ignorable="d"
+       Title="WindowProgress" Height="160" Width="400"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{x:Null}"
+        AllowsTransparency="True"
+        ShowInTaskbar="False">
+    <Window.DataContext>
+        <local:UniversalLoadingWindow></local:UniversalLoadingWindow>
+    </Window.DataContext>
+    <Grid >
+        <Border CornerRadius="5" Background="{Binding ViewModel.MainBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="{Binding ViewModel.Title}" Foreground="{Binding ViewModel.Foreground_Title}" FontSize="25" FontWeight="DemiBold"  Margin="5,0"/>
+                    <Rectangle Grid.Row="1" Fill="{Binding ViewModel.Foreground_Title}" Width="200" HorizontalAlignment="Left"/>
+                    <Label Grid.Row="2" Foreground="{Binding ViewModel.Foreground_Annotation}" FontSize="20" Margin="5,0">
+                        <TextBlock Text="{Binding ViewModel.Annotation}" TextWrapping="Wrap"/>
+                    </Label>
+                </Grid>
+                <Label Grid.Column="1" HorizontalContentAlignment="Center" 
+                       VerticalContentAlignment="Center" Foreground="{Binding ViewModel.Foreground_Title}" FontSize="20">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.PercentsProgress}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                    <TextBlock Text="{Binding ViewModel.PercentsProgress, StringFormat={}{0}%}"/>
+                </Label>
+                <Ellipse x:Name="ellipse" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush}"  Height="20" Width="20" Margin="55,10,55,100"/>
+                <Ellipse x:Name="ellipse1" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush6}"  Height="20" Width="20" Margin="24,24,86,86"/>
+                <Ellipse x:Name="ellipse2" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush5}"  Height="20" Width="20" Margin="10,55,100,55"/>
+                <Ellipse x:Name="ellipse3" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush4}"  Height="20" Width="20" Margin="24,86,86,24"/>
+                <Ellipse x:Name="ellipse4" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush3}"  Height="20" Width="20" Margin="55,100,55,10"/>
+                <Ellipse x:Name="ellipse5" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush2}"  Height="20" Width="20" Margin="86,86,24,24"/>
+                <Ellipse x:Name="ellipse6" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush1}"  Height="20" Width="20" Margin="100,55,10,55"/>
+                <Ellipse x:Name="ellipse7" Grid.Column="1" Fill="{Binding ViewModel.ElementBrush0}"  Height="20" Width="20" Margin="86,24,24,86"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
