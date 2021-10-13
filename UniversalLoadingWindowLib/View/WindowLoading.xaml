@@ -15,7 +15,7 @@
         <local:UniversalLoadingWindow></local:UniversalLoadingWindow>
     </Window.DataContext>
     <Grid >
-        <Border CornerRadius="5" Background="{Binding ViewModel.MainBrush}">
+        <Border CornerRadius="10" Background="{Binding ViewModel.MainBrush}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -28,7 +28,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Content="{Binding ViewModel.Title}" Foreground="{Binding ViewModel.Foreground_Title}" FontSize="25" FontWeight="DemiBold"  Margin="5,0"/>
-                    <Rectangle Grid.Row="1" Fill="{Binding ViewModel.Foreground_Title}" Width="200" HorizontalAlignment="Left"/>
+                    <Rectangle Fill="{Binding ViewModel.BrushOfLine}" Grid.Row="1" Width="260" HorizontalAlignment="Left"/>
                     <Label Grid.Row="2" Foreground="{Binding ViewModel.Foreground_Annotation}" FontSize="20" Margin="5,0">
                         <TextBlock Text="{Binding ViewModel.Annotation}" TextWrapping="Wrap"/>
                     </Label>

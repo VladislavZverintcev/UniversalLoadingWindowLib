@@ -1,4 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 namespace UniversalLoadingWindowLib
 {
@@ -111,6 +114,28 @@ namespace UniversalLoadingWindowLib
             if (ViewModel != null)
             {
                 ViewModel.PercentsProgress = newPercent;
+            }
+        }
+        /// <summary>
+        /// The loading process, during which the parent window is hidden, 
+        /// the loading window is launched and the task that runs the specified delegate 
+        /// is executed asynchronously, after execution the loading window is hidden and 
+        /// the parent window is shown.
+        /// </summary>
+        /// <param name="parentWindow"></param>
+        /// <param name="workAction"></param>
+        public async void Loading(Window parentWindow, Action workAction)
+        {
+            if(parentWindow != null && workAction != null)
+            {
+                parentWindow.Hide();
+                Show();
+                await Task.Run(() =>
+                {
+                    workAction.Invoke();
+                    Application.Current?.Dispatcher.Invoke(() => { wl.Close(); });
+                    Application.Current?.Dispatcher.Invoke(() => { parentWindow.Show(); });
+                });
             }
         }
         #endregion Methods

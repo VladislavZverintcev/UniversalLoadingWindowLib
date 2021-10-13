@@ -155,6 +155,7 @@ namespace UniversalLoadingWindowLib
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ElementBrush0"));
             }
         }
+        public LinearGradientBrush BrushOfLine { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -169,6 +170,7 @@ namespace UniversalLoadingWindowLib
                 MainBrush = _mainBrush;
                 Foreground_Title = new SolidColorBrush(_foregroundTitle);
                 Foreground_Annotation = new SolidColorBrush(_foregroundAnnotation);
+                BrushOfLine = new LinearGradientBrush(Foreground_Title.Color, new Color { A = 0, R = 0, G = 0, B = 0 }, 0);
                 ElementBrush = new SolidColorBrush(new Color { A = 255, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
                 ElementBrush6 = new SolidColorBrush(new Color { A = 223, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
                 ElementBrush5 = new SolidColorBrush(new Color { A = 191, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
@@ -210,6 +212,7 @@ namespace UniversalLoadingWindowLib
             MainBrush = new SolidColorBrush(new Color { A = 255, R = 100, G = 100, B = 100 });
             Foreground_Title = new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             Foreground_Annotation =new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
+            BrushOfLine = new LinearGradientBrush(Foreground_Title.Color, new Color { A = 0, R = 0, G = 0, B = 0 }, 0);
             ElementBrush = new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush6 = new SolidColorBrush(new Color { A = 223, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush5 = new SolidColorBrush(new Color { A = 191, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
