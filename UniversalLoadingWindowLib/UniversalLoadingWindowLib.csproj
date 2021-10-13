@@ -49,12 +49,12 @@
     <Compile Include="UniversalLoadingWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\LoadingWindowViewModel.cs" />
-    <Compile Include="WindowLoading.xaml.cs">
+    <Compile Include="View\WindowLoading.xaml.cs">
       <DependentUpon>WindowLoading.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="WindowLoading.xaml">
+    <Page Include="View\WindowLoading.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

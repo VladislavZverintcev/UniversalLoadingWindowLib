@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace UniversalLoadingWindowLib
 {
@@ -18,7 +20,7 @@ namespace UniversalLoadingWindowLib
         WindowLoading wl;
         #endregion Fields
         #region Properties
-        private SolidColorBrush MainBrush { get; set; }
+        private Brush MainBrush { get; set; }
         private Color ElementColor { get; set; }
         public LoadingWindowViewModel ViewModel
         {
@@ -43,7 +45,8 @@ namespace UniversalLoadingWindowLib
         /// <param name="_elementColor"> Color of animated bubbles</param>
         /// <param name="_foregroundTitle">Title's font color (and color of line and percents)</param>
         /// <param name="_foregroundAnnotation"> Annotation's font color</param>
-        public UniversalLoadingWindow(string _title, string _annotation, SolidColorBrush _mainBrush, Color _elementColor, SolidColorBrush _foregroundTitle, SolidColorBrush _foregroundAnnotation)
+        public UniversalLoadingWindow(string _title, string _annotation, Brush _mainBrush, 
+            Color _elementColor, Color _foregroundTitle, Color _foregroundAnnotation)
         {
             MainBrush = _mainBrush;
             ElementColor = _elementColor;
@@ -56,12 +59,9 @@ namespace UniversalLoadingWindowLib
         /// </summary>
         public void Show()
         {
-            if (ViewModel != null)
-            {
-                wl = new WindowLoading();
-                wl.DataContext = this;
-                wl.Show();
-            }
+            wl = new WindowLoading();
+            wl.DataContext = this;
+            wl.Show();
         }
         /// <summary>
         /// Show Loading Window (Modal)
@@ -82,6 +82,8 @@ namespace UniversalLoadingWindowLib
         {
             if (wl != null)
             {
+                ViewModel.StopAnimation();
+                ViewModel = null;
                 wl.Close();
             }
         }

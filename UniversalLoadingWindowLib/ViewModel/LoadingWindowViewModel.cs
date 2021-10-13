@@ -17,8 +17,8 @@ namespace UniversalLoadingWindowLib
         string title;
         string annotation;
         byte percentsProgress = 0;
-        //Brushes
-        SolidColorBrush mainBrush;
+        //Brushes and colors
+        Brush mainBrush;
         SolidColorBrush foreground_title;
         SolidColorBrush foreground_annotation;
         SolidColorBrush elementBrush;
@@ -64,7 +64,7 @@ namespace UniversalLoadingWindowLib
                 }
             }
         }
-        public SolidColorBrush MainBrush
+        public Brush MainBrush
         {
             get { return mainBrush; }
             set
@@ -164,16 +164,16 @@ namespace UniversalLoadingWindowLib
 
         #region Constructors
         public LoadingWindowViewModel(string _title, string _annotation, 
-            SolidColorBrush _mainBrush, Color _elementColor, SolidColorBrush _foregroundTitle, 
-            SolidColorBrush _foregroundAnnotation)
+            Brush _mainBrush, Color _elementColor, Color _foregroundTitle, 
+            Color _foregroundAnnotation)
         {
             if(_mainBrush != null && _elementColor != null && _title != null && _annotation != null && _foregroundTitle != null)
             {
                 Title = _title;
                 Annotation = _annotation;
                 MainBrush = _mainBrush;
-                Foreground_Title = _foregroundTitle;
-                Foreground_Annotation = _foregroundAnnotation;
+                Foreground_Title = new SolidColorBrush(_foregroundTitle);
+                Foreground_Annotation = new SolidColorBrush(_foregroundAnnotation);
                 ElementBrush = new SolidColorBrush(new Color { A = 255, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
                 ElementBrush6 = new SolidColorBrush(new Color { A = 223, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
                 ElementBrush5 = new SolidColorBrush(new Color { A = 191, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
@@ -214,7 +214,7 @@ namespace UniversalLoadingWindowLib
             Color defaultElementColor = new Color { A = 255, R = 128, G = 128, B = 128 };
             MainBrush = new SolidColorBrush(new Color { A = 255, R = 100, G = 100, B = 100 });
             Foreground_Title = new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
-            Foreground_Annotation = new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
+            Foreground_Annotation =new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush = new SolidColorBrush(new Color { A = 255, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush6 = new SolidColorBrush(new Color { A = 223, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush5 = new SolidColorBrush(new Color { A = 191, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
@@ -249,14 +249,19 @@ namespace UniversalLoadingWindowLib
         }
         private void RefreshAnimValues()
         {
-            Application.Current.Dispatcher.Invoke(() => ElementBrush = GetShiftColorBrush(ElementBrush));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush6 = GetShiftColorBrush(ElementBrush6));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush5 = GetShiftColorBrush(ElementBrush5));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush4 = GetShiftColorBrush(ElementBrush4));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush3 = GetShiftColorBrush(ElementBrush3));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush2 = GetShiftColorBrush(ElementBrush2));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush1 = GetShiftColorBrush(ElementBrush1));
-            Application.Current.Dispatcher.Invoke(() => ElementBrush0 = GetShiftColorBrush(ElementBrush0));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush = GetShiftColorBrush(ElementBrush));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush6 = GetShiftColorBrush(ElementBrush6));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush5 = GetShiftColorBrush(ElementBrush5));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush4 = GetShiftColorBrush(ElementBrush4));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush3 = GetShiftColorBrush(ElementBrush3));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush2 = GetShiftColorBrush(ElementBrush2));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush1 = GetShiftColorBrush(ElementBrush1));
+            Application.Current?.Dispatcher.Invoke(() => ElementBrush0 = GetShiftColorBrush(ElementBrush0));
+        }
+        public void StopAnimation()
+        {
+            animValueTimer?.Stop();
+            animValueTimer?.Dispose();
         }
         #endregion Methods
     }
