@@ -25,7 +25,7 @@ namespace UniversalLoadingWindowLib
         SolidColorBrush elementBrush1;
         SolidColorBrush elementBrush0;
         //
-        private static System.Timers.Timer animValueTimer;
+        private System.Timers.Timer animValueTimer;
         #endregion Fields
 
         #region Properties
