@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -15,6 +16,7 @@ namespace UniversalLoadingWindowLib
         #region Fields
         private LoadingWindowViewModel viewModel = new LoadingWindowViewModel();
         WindowLoading wl;
+        Thread ownerThread;
         #endregion Fields
         #region Properties
         private Brush MainBrush { get; set; }
@@ -31,7 +33,7 @@ namespace UniversalLoadingWindowLib
         /// </summary>
         public UniversalLoadingWindow()
         {
-
+            ownerThread = Thread.CurrentThread;
         }
         /// <summary>
         /// Constructor with configurated LoadingWindow Parameters
@@ -48,6 +50,7 @@ namespace UniversalLoadingWindowLib
             MainBrush = _mainBrush;
             ElementColor = _elementColor;
             ViewModel = new LoadingWindowViewModel(_title, _annotation, MainBrush, ElementColor, _foregroundTitle, _foregroundAnnotation);
+            ownerThread = Thread.CurrentThread;
         }
         #endregion Constructors
         #region Methods
@@ -81,7 +84,7 @@ namespace UniversalLoadingWindowLib
             {
                 ViewModel.StopAnimation();
                 ViewModel = null;
-                wl.Close();
+                Dispatcher.FromThread(ownerThread).Invoke(() => wl.Close());
             }
         }
         /// <summary>
