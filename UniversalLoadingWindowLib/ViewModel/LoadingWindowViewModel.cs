@@ -3,6 +3,10 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using System.Timers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace UniversalLoadingWindowLib
 {
@@ -25,6 +29,8 @@ namespace UniversalLoadingWindowLib
         SolidColorBrush elementBrush1;
         SolidColorBrush elementBrush0;
         //
+        //CurrentThread
+        Thread ownerThread;
         private System.Timers.Timer animValueTimer;
         #endregion Fields
 
@@ -179,6 +185,7 @@ namespace UniversalLoadingWindowLib
                 ElementBrush2 = new SolidColorBrush(new Color { A = 97, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
                 ElementBrush1 = new SolidColorBrush(new Color { A = 66, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
                 ElementBrush0 = new SolidColorBrush(new Color { A = 35, R = _elementColor.R, G = _elementColor.G, B = _elementColor.B });
+                ownerThread = Thread.CurrentThread;
             }
             else
             {
@@ -201,7 +208,12 @@ namespace UniversalLoadingWindowLib
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            RefreshAnimValues();
+            try
+            {
+                Dispatcher.FromThread(ownerThread)?.Invoke(() => RefreshAnimValues());
+            }
+            catch(System.Threading.Tasks.TaskCanceledException)
+            { return; }
         }
         #endregion Events
 
@@ -221,6 +233,7 @@ namespace UniversalLoadingWindowLib
             ElementBrush2 = new SolidColorBrush(new Color { A = 97, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush1 = new SolidColorBrush(new Color { A = 66, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
             ElementBrush0 = new SolidColorBrush(new Color { A = 35, R = defaultElementColor.R, G = defaultElementColor.G, B = defaultElementColor.B });
+            ownerThread = Thread.CurrentThread;
         }
         private SolidColorBrush GetShiftColorBrush(SolidColorBrush oldBrush)
         {
@@ -236,6 +249,7 @@ namespace UniversalLoadingWindowLib
                 if (oldBrush.Color.A == 66) { newColor.A = 35; }
                 if (oldBrush.Color.A == 35) { newColor.A = 255; }
                 return new SolidColorBrush(newColor);
+
             }
             else { return null; }
         }
@@ -247,19 +261,21 @@ namespace UniversalLoadingWindowLib
         }
         private void RefreshAnimValues()
         {
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush = GetShiftColorBrush(ElementBrush));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush6 = GetShiftColorBrush(ElementBrush6));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush5 = GetShiftColorBrush(ElementBrush5));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush4 = GetShiftColorBrush(ElementBrush4));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush3 = GetShiftColorBrush(ElementBrush3));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush2 = GetShiftColorBrush(ElementBrush2));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush1 = GetShiftColorBrush(ElementBrush1));
-            Application.Current?.Dispatcher.Invoke(() => ElementBrush0 = GetShiftColorBrush(ElementBrush0));
+            ElementBrush = GetShiftColorBrush(ElementBrush);
+            ElementBrush0 = GetShiftColorBrush(ElementBrush0);
+            ElementBrush1 = GetShiftColorBrush(ElementBrush1);
+            ElementBrush2 = GetShiftColorBrush(ElementBrush2);
+            ElementBrush3 = GetShiftColorBrush(ElementBrush3);
+            ElementBrush4 = GetShiftColorBrush(ElementBrush4);
+            ElementBrush5 = GetShiftColorBrush(ElementBrush5);
+            ElementBrush6 = GetShiftColorBrush(ElementBrush6);
         }
         public void StopAnimation()
         {
             animValueTimer?.Stop();
+            animValueTimer?.Close();
             animValueTimer?.Dispose();
+            animValueTimer = null;
         }
         #endregion Methods
     }
